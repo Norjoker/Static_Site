@@ -67,13 +67,67 @@ class TestParentNode(unittest.TestCase):
         parent_node = ParentNode("div", [child_node])
         self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
 
-def test_to_html_with_grandchildren(self):
-        grandchild_node = LeafNode("b", "grandchild")
-        child_node = ParentNode("span", [grandchild_node])
-        parent_node = ParentNode("div", [child_node])
+    def test_to_html_with_grandchildren(self):
+            grandchild_node = LeafNode("b", "grandchild")
+            child_node = ParentNode("span", [grandchild_node])
+            parent_node = ParentNode("div", [child_node])
+            self.assertEqual(
+                parent_node.to_html(),
+                "<div><span><b>grandchild</b></span></div>")
+    
+    def test_to_html_raises_when_tag_none(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode(None, [child_node])
+        with self.assertRaises(ValueError):
+            parent_node.to_html()
+
+    def test_to_html_raises_when_children_none(self):
+        parent_node = ParentNode("div", None)
+        with self.assertRaises(ValueError):
+            parent_node.to_html()
+
+    def test_to_html_with_empty_children_list(self):
+        parent_node = ParentNode("div", [])
+        with self.assertRaises(ValueError):
+            parent_node.to_html()
+
+    def test_nested_parent_multiple_children_order_preserved(self):
+        children = [
+            LeafNode("span", "first"),
+            LeafNode("b", "second"),
+            ParentNode("i", [LeafNode(None, "third")]),  # <i>third</i>
+        ]
+        parent_node = ParentNode("div", children)
         self.assertEqual(
             parent_node.to_html(),
-            "<div><span><b>grandchild</b></span></div>")
+            "<div><span>first</span><b>second</b><i>third</i></div>"
+        )
+
+    def test_deep_nesting_three_levels_mixed(self):
+        deep = ParentNode("ul", [
+            ParentNode("li", [LeafNode(None, "one")]),
+            ParentNode("li", [LeafNode("b", "two")]),
+            ParentNode("li", [ParentNode("span", [LeafNode(None, "three")])]),
+        ])
+        wrapper = ParentNode("div", [deep])
+        self.assertEqual(
+            wrapper.to_html(),
+            "<div><ul><li>one</li><li><b>two</b></li><li><span>three</span></li></ul></div>"
+        )
+
+    def test_child_error_propagates_from_leaf(self):
+        # LeafNode with value=None should raise; ensure ParentNode doesn't swallow it
+        bad_child = LeafNode("p", None)
+        parent_node = ParentNode("div", [bad_child])
+        with self.assertRaises(ValueError):
+            parent_node.to_html()
+
+    def test_props_are_ignored_in_output_and_not_equal_with_attrs(self):
+        # Current ParentNode.to_html() ignores props when rendering
+        parent_node = ParentNode("div", [LeafNode("span", "x")], props={"class": "box"})
+        self.assertEqual(parent_node.to_html(), "<div><span>x</span></div>")
+        # And ensure it's NOT equal to a string that includes attributes
+        self.assertNotEqual(parent_node.to_html(), '<div class="box"><span>x</span></div>')
 
 
 if __name__ == "__main__":
