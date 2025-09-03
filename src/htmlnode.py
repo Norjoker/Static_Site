@@ -38,7 +38,10 @@ class LeafNode(HTMLNode):
             for key in props:
                 string += f" {key}="
                 string += f'"{props[key]}"'
-            string += f">{self.value}</{self.tag}>"
+            if self.tag == "img":
+                string += f" />"
+            else:
+                string += f">{self.value}</{self.tag}>"
             return string
         else:
             return f"<{self.tag}>{self.value}</{self.tag}>"
