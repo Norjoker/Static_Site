@@ -86,7 +86,7 @@ class TestSplitNode(unittest.TestCase):
             TextNode("code", TextType.CODE),
             TextNode(".", TextType.TEXT),
             TextNode("Then ", TextType.TEXT),
-            TextNode("strike", TextType.ITALIC),
+            TextNode("italics", TextType.ITALIC),
             TextNode(" and ", TextType.TEXT),
             TextNode("second bold", TextType.BOLD),
             TextNode(".", TextType.TEXT),
