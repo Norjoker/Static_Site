@@ -164,5 +164,6 @@ class TestSplitNode(unittest.TestCase):
             extract_markdown_images(md)
         )
 
+
 if __name__ == "__main__":
     unittest.main()

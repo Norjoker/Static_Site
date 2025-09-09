@@ -32,16 +32,16 @@ def text_node_to_html_node(text_node):
             return LeafNode(None,text_node.text)
         
         case TextType.BOLD:
-            return LeafNode("b", text_node.value)
+            return LeafNode("b", text_node.text)
         
         case TextType.ITALIC:
-            return LeafNode("i", text_node.value)
+            return LeafNode("i", text_node.text)
         
         case TextType.CODE:
-            return LeafNode("code", text_node.value)
+            return LeafNode("code", text_node.text)
         
         case TextType.LINK:
-            return LeafNode("a", text_node.value, "href")
+            return LeafNode("a", text_node.text, "href")
         
         case TextType.IMAGE:
             return LeafNode("img", "", {"src" : "insert image URL here", "alt" : "insert alt text here"})

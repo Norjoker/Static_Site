@@ -1,8 +1,17 @@
 from textnode import TextNode, TextType
+import os
+import shutil
 
 def main():
-    obj = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
-    print(obj)
+    source = os.getcwd() + "/static/"
+    target = os.getcwd() + "/public/"
+    #copy_content(source, target)
+    print(os.path.exists(source))
+    print(os.path.exists(source))
+
+def copy_content(source, target):
+    shutil.rmtree(target)
+    os.makedirs(target)
 
 
 if __name__ == "__main__":
