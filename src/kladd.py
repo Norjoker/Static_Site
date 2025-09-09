@@ -1,6 +1,8 @@
 
-text = "Start **bold** and `code`."
-delimiter = "**"
+import re
 
-delimiter_indices = [j for j, x in enumerate(text) if x == delimiter]
-print(delimiter_indices)
+text = "!\[(.*?)\]\((https:\/\/.*?)\)"
+
+matches = re.findall(r"!\[(.*?)\]\((https:\/\/.*?)\)", text)
+
+print(matches)

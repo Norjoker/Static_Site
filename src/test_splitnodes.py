@@ -91,3 +91,6 @@ class TestSplitNode(unittest.TestCase):
             TextNode("second bold", TextType.BOLD),
             TextNode(".", TextType.TEXT),
         ])
+
+if __name__ == "__main__":
+    unittest.main()
