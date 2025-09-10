@@ -7,6 +7,8 @@ def main():
     source = os.getcwd() + "/static/"
     target = os.getcwd() + "/public/"
     content = os.getcwd() + "/content/"
+    if not os.path.isdir(target):
+         os.mkdir(target)
     source_ind = os.path.join(content, "index.md")
     public_ind = os.path.join(target, "index.html")
     template_path = os.path.join(os.getcwd(), "template.html")

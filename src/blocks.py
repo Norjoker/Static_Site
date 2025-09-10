@@ -1,5 +1,5 @@
 from enum import Enum
-from htmlnode import HTMLNode, ParentNode
+from htmlnode import HTMLNode, ParentNode, LeafNode
 from splitnodes import text_to_textnodes
 from extract_markdown import *
 from textnode import text_node_to_html_node, TextNode, TextType
@@ -62,6 +62,20 @@ def markdown_to_html_node(markdown):
                tag = "blockquote"
         return tag
 
+    def format_list(list_text):
+        lines = list_text.splitlines()
+        html = ""
+        i = 1
+        for line in lines:
+            if line.startswith("- "):
+                line = line.replace("- ", "<li>")
+                html += line + "</li>"
+            else:
+                line = line.replace(f"{i}. ", "<li>")
+                html += line + "</li>"
+                i += 1
+        return html
+
     def text_to_children(text):
         text_nodes = text_to_textnodes(text)
         nodes = []
@@ -74,9 +88,18 @@ def markdown_to_html_node(markdown):
     for block in markdown_to_blocks(markdown):
         type = block_to_block_type(block)
         tag = get_html_tag(type)
+        if tag == "h1":
+            c = block.count("#")
+            htag = f"h{c}"
+            text = block.replace("\n", " ")
+            html_node = LeafNode(htag, text_to_children(text), None)
         if tag == "code":
-            html_node = ParentNode("pre",[text_node_to_html_node(TextNode(block.strip("`"),TextType.CODE))])
+            html_node = ParentNode("pre",[text_node_to_html_node(TextNode(block.strip("`"),TextType.CODE))])        
+        elif tag == "ol" or tag == "ul":
+            html_node = LeafNode(tag, format_list(block), None)
         else:
+            if tag == "blockquote":
+                block = block.replace("> ", "")
             text = block.replace("\n", " ")
             html_node = ParentNode(tag, text_to_children(text), None)
         children.append(html_node)

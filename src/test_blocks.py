@@ -191,6 +191,52 @@ the **same** even with inline stuff
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
 
+    def test_unordered_list(self):
+        md = """- item one
+- item two
+- item three
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>item one</li><li>item two</li><li>item three</li></ul></div>",
+        )
+
+    def test_ordered_list(self):
+        md = """1. first
+2. second
+3. third
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ol><li>first</li><li>second</li><li>third</li></ol></div>",
+        )
+
+    def test_blockquote(self):
+        md = """> quoted line
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><blockquote>quoted line</blockquote></div>",
+        )
+
+    def test_headings(self):
+        md = """# Top
+### Mid
+###### Tiny
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h1>Top</h1><h3>Mid</h3><h6>Tiny</h6></div>",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

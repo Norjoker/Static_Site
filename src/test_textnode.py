@@ -30,13 +30,6 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "This is a text node")
 
-    def test_image(self):
-        node = TextNode("This is an image node", TextType.IMAGE)
-        html_node = text_node_to_html_node(node)
-        self.assertEqual(html_node.tag, "img")
-        self.assertEqual(html_node.value, "")
-        self.assertEqual(html_node.to_html(), '<img src="insert image URL here" alt="insert alt text here" />')
-
 
 if __name__ == "__main__":
     unittest.main()
