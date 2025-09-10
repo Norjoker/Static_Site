@@ -92,14 +92,16 @@ def markdown_to_html_node(markdown):
             c = block.count("#")
             htag = f"h{c}"
             text = block.replace("\n", " ")
-            html_node = LeafNode(htag, text_to_children(text), None)
-        if tag == "code":
+            text = text.strip("#")
+            html_node = ParentNode(htag, text_to_children(text), None)
+        elif tag == "code":
             html_node = ParentNode("pre",[text_node_to_html_node(TextNode(block.strip("`"),TextType.CODE))])        
         elif tag == "ol" or tag == "ul":
-            html_node = LeafNode(tag, format_list(block), None)
+            html_node = ParentNode(tag, text_to_children(format_list(block)), None)
         else:
             if tag == "blockquote":
                 block = block.replace("> ", "")
+                block = block.replace(">", "")
             text = block.replace("\n", " ")
             html_node = ParentNode(tag, text_to_children(text), None)
         children.append(html_node)
