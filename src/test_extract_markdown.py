@@ -164,6 +164,18 @@ class TestSplitNode(unittest.TestCase):
             extract_markdown_images(md)
         )
 
+    # --- Extract Title ---
+    def test_extract_title(self):
+        title = extract_title(
+            "# Heading"
+        )
+        self.assertEqual("Heading", title)
+
+    def test_invalid_title(self):
+        title = "##Heading"
+        with self.assertRaises(Exception) as context:
+            extract_title(title)
+        self.assertEqual(str(context.exception), "invalid markdown syntax")
 
 if __name__ == "__main__":
     unittest.main()

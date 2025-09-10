@@ -1,15 +1,23 @@
 from textnode import TextNode, TextType
 import os
 import shutil
+from page_gen import generate_page
 
 def main():
     source = os.getcwd() + "/static/"
     target = os.getcwd() + "/public/"
-    if os.path.exists(source) and print(os.path.exists(target)):
+    content = os.getcwd() + "/content/"
+    source_ind = os.path.join(content, "index.md")
+    public_ind = os.path.join(target, "index.css")
+    template_path = os.path.join(os.getcwd(), "template.html")
+    print(f"From:{source}\nTo:{target}")
+    if os.path.exists(source) and os.path.exists(target):
         print("Paths are valid. Proceeding!")
         copy_content(source, target)
     else:
         raise Exception("Invalid source or target path")
+    
+    generate_page(source_ind, template_path, public_ind)
 
 def copy_content(source, target, already_deleted = False):
     source = os.path.abspath(source)
@@ -19,7 +27,7 @@ def copy_content(source, target, already_deleted = False):
     if not already_deleted:
         if os.path.exists(target):
             shutil.rmtree(target)
-        os.makedir(target)
+        os.mkdir(target)
         already_deleted = True
     
     directory_content = os.listdir(source)
