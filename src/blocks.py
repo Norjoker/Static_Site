@@ -92,6 +92,7 @@ def markdown_to_html_node(markdown):
             c = block.count("#")
             htag = f"h{c}"
             text = block.replace("\n", " ")
+            text = text.strip("# ")
             text = text.strip("#")
             html_node = ParentNode(htag, text_to_children(text), None)
         elif tag == "code":

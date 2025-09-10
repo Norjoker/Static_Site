@@ -1,5 +1,6 @@
 from extract_markdown import extract_title
 from blocks import markdown_to_html_node
+import os
 
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
@@ -14,3 +15,24 @@ def generate_page(from_path, template_path, dest_path):
     template = template.replace("{{ Content }}", html)
     with open(dest_path, "w") as f:
         f.write(template)
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    directory_content = os.listdir(dir_path_content)
+    if not directory_content:
+         return False
+    for content in directory_content:
+        full_content_path = os.path.join(dir_path_content, content)
+        if content.endswith(".md"):
+            html_content = content.replace(".md",".html")
+            full_dest_path = os.path.join(dest_dir_path, html_content)
+        else:
+            full_dest_path = os.path.join(dest_dir_path, content)
+        if os.path.isfile(full_content_path):
+                generate_page(full_content_path, template_path, full_dest_path)
+        elif os.path.isdir(full_content_path):
+                print(f"{full_content_path} is a directory, inception time!")
+                new_target = os.path.join(dest_dir_path, content)
+                os.mkdir(new_target)
+                generate_pages_recursive(full_content_path, template_path, new_target)
+        else:
+             raise Exception("Unsupported filetype detected")
