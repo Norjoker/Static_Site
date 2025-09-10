@@ -1,7 +1,7 @@
 from textnode import TextNode, TextType
 import os
 import shutil
-from page_gen import generate_page
+from page_gen import generate_pages_recursive
 
 def main():
     source = os.getcwd() + "/static/"
@@ -9,17 +9,17 @@ def main():
     content = os.getcwd() + "/content/"
     if not os.path.isdir(target):
          os.mkdir(target)
-    source_ind = os.path.join(content, "index.md")
-    public_ind = os.path.join(target, "index.html")
+    #source_ind = os.path.join(content, "index.md")
+    #public_ind = os.path.join(target, "index.html")
     template_path = os.path.join(os.getcwd(), "template.html")
-    print(f"From:{source}\nTo:{target}")
+    #print(f"From:{source}\nTo:{target}")
     if os.path.exists(source) and os.path.exists(target):
         print("Paths are valid. Proceeding!")
         copy_content(source, target)
     else:
         raise Exception("Invalid source or target path")
     
-    generate_page(source_ind, template_path, public_ind)
+    generate_pages_recursive(content, template_path, target)
 
 def copy_content(source, target, already_deleted = False):
     source = os.path.abspath(source)
