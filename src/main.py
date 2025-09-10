@@ -1,14 +1,19 @@
 from textnode import TextNode, TextType
 import os
+import sys
 import shutil
 from page_gen import generate_pages_recursive
 
 def main():
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
     source = os.getcwd() + "/static/"
-    target = os.getcwd() + "/public/"
+    target = os.getcwd() + "/docs/"
     content = os.getcwd() + "/content/"
     if not os.path.isdir(target):
-         os.mkdir(target)
+        os.mkdir(target)
     #source_ind = os.path.join(content, "index.md")
     #public_ind = os.path.join(target, "index.html")
     template_path = os.path.join(os.getcwd(), "template.html")
@@ -19,7 +24,7 @@ def main():
     else:
         raise Exception("Invalid source or target path")
     
-    generate_pages_recursive(content, template_path, target)
+    generate_pages_recursive(content, template_path, target, basepath)
 
 def copy_content(source, target, already_deleted = False):
     source = os.path.abspath(source)
