@@ -8,7 +8,7 @@ def main():
     target = os.getcwd() + "/public/"
     content = os.getcwd() + "/content/"
     source_ind = os.path.join(content, "index.md")
-    public_ind = os.path.join(target, "index.css")
+    public_ind = os.path.join(target, "index.html")
     template_path = os.path.join(os.getcwd(), "template.html")
     print(f"From:{source}\nTo:{target}")
     if os.path.exists(source) and os.path.exists(target):
